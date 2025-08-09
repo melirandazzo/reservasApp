@@ -1,0 +1,82 @@
+[
+    {
+        "id": 1,
+        "title": "Parrila",
+        "shortDescription": "",
+        "longDescription": "",
+        "price": 1200000,
+        "stock": 2,
+        "category": "Espacio",
+        "category_id": 1,
+        "discount": 0,
+        "tags": [
+            "new",
+            "ofert"
+        ],
+        "image": "parrilla.png"
+    },
+    {
+        "id": 2,
+        "title": "Terraza",
+        "shortDescription": "",
+        "longDescription": "",
+        "price": 1200000,
+        "stock": 1,
+        "category": "Espacio",
+        "category_id": 1,
+        "discount": 0,
+        "tags": [
+            "new",
+            "ofert"
+        ],
+        "image": "terraza.png"
+    },
+    {
+        "id": 3,
+        "title": "Salón",
+        "shortDescription": "",
+        "longDescription": "",
+        "price": 1200000,
+        "stock": 2,
+        "category": "Espacio",
+        "category_id": 1,
+        "discount": 0,
+        "tags": [
+            "new",
+            "ofert"
+        ],
+        "image": "salon.png"
+    },
+    {
+        "id": 4,
+        "title": "Cochera",
+        "shortDescription": "",
+        "longDescription": "",
+        "price": 1200000,
+        "stock": 20,
+        "category": "Cochera",
+        "category_id": 2,
+        "discount": 0,
+        "tags": [
+            "new",
+            "ofert"
+        ],
+        "image": "cochera.png"
+    },
+    {
+        "id": 5,
+        "title": "Oficina",
+        "shortDescription": "",
+        "longDescription": "",
+        "price": 1200000,
+        "stock": 20,
+        "category": "Oficina",
+        "category_id": 40,
+        "discount": 0,
+        "tags": [
+            "new",
+            "ofert"
+        ],
+        "image": "oficina.png"
+    }
+]

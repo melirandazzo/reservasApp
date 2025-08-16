@@ -18,9 +18,11 @@ const generateStockItems = (product) => {
     return items;
 };
 
-const ProductsScreen = ({ category }) => {
+const ProductsScreen = ({ navigation, route }) => {
     const [productsFiltered, setProductsFiltered] = useState([])
     const [keyword, setKeyword] = useState("")
+
+    const { category } = route.params
 
     useEffect(() => {
         let productsFilteredByCategory = products.filter(product => product.category.toLowerCase() === category.title.toLowerCase())
@@ -32,13 +34,12 @@ const ProductsScreen = ({ category }) => {
             productsFilteredByCategory = productsFilteredByCategory.filter(product => product.title.toLowerCase().includes(keyword.toLocaleLowerCase()))
         }
 
-        console.log(productsFilteredByCategory)
         setProductsFiltered(productsFilteredByCategory)
     }, [category, keyword])
 
     const renderProductItem = ({ item }) => {
         return (
-            <Pressable onPress={() => console.log(item)}>
+            <Pressable onPress={() => navigation.navigate("Producto",{product: item})}>
                 <FlatCard style={styles.cardCustom}>
                     <Image source={getImage(item.image)} style={{ width: 120, height: 50 }} resizeMode="contain" />
                     <Text style={styles.title}>{item.title}</Text>
@@ -46,6 +47,7 @@ const ProductsScreen = ({ category }) => {
             </Pressable>
         )
     }
+
     return (
         <View >
             <Search setKeyword={setKeyword} />

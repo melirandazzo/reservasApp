@@ -4,7 +4,10 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
 import { useState, useEffect } from 'react';
 import { NavigationContainer } from "@react-navigation/native";
-import TabsNavigator from './src/navigation/tabs/TabsNavigator';7
+import TabsNavigator from './src/navigation/tabs/TabsNavigator';
+import { Provider } from 'react-redux';
+import { store } from './src/store';
+
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
@@ -49,10 +52,12 @@ export default function App() {
   // );
 
     return (
-    <NavigationContainer>
-      <StatusBar style="light" />
-      <TabsNavigator />
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <StatusBar style="light" />
+        <TabsNavigator />
+      </NavigationContainer>
+    </Provider>
   );
 }
 

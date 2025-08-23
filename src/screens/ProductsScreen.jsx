@@ -5,6 +5,8 @@ import { fonts } from '../global/fonts'
 import Search from '../components/Search'
 import FlatCard from '../components/FlatCard'
 import { getImage } from '../global/images'
+import { useSelector,useDispatch } from 'react-redux'
+import { setProductSelected } from '../store/slices/shopSlice'
 
 const generateStockItems = (product) => {
     const items = [];
@@ -22,7 +24,14 @@ const ProductsScreen = ({ navigation, route }) => {
     const [productsFiltered, setProductsFiltered] = useState([])
     const [keyword, setKeyword] = useState("")
 
-    const { category } = route.params
+        const category = useSelector(state=>state.shopReducer.categorySelected)
+
+    const dispatch = useDispatch()
+
+    const handleSelectProduct = (product) => {
+        dispatch(setProductSelected(product))
+        navigation.navigate("Producto")
+    }
 
     useEffect(() => {
         let productsFilteredByCategory = products.filter(product => product.category.toLowerCase() === category.title.toLowerCase())
@@ -39,7 +48,7 @@ const ProductsScreen = ({ navigation, route }) => {
 
     const renderProductItem = ({ item }) => {
         return (
-            <Pressable onPress={() => navigation.navigate("Producto",{product: item})}>
+            <Pressable onPress={() => handleSelectProduct(item)}>
                 <FlatCard style={styles.cardCustom}>
                     <Image source={getImage(item.image)} style={{ width: 120, height: 50 }} resizeMode="contain" />
                     <Text style={styles.title}>{item.title}</Text>

@@ -6,9 +6,11 @@ import { getImage } from '../global/images'
 import { ImageComponent } from '../components/AssetsWrapper'
 import { useSelector, useDispatch } from 'react-redux';
 import { setCategorySelected } from '../store/slices/shopSlice';
+import { useGetCategoriesQuery } from '../services/shopApi';
 
 const CategoriesScreen = ({ navigation }) => {
-    const categories = useSelector(state => state.shopReducer.categories)
+    //const categories = useSelector(state => state.shopReducer.categories)
+    const {data:categories, isLoading, error} = useGetCategoriesQuery()
 
     const dispatch = useDispatch()
 

@@ -17,7 +17,6 @@ const shopSlice = createSlice({
             state.categorySelected = action.payload
         },
         setProductSelected: (state,action) => {
-            console.log("despachando acción setCategorySelected: ",action)
             state.productSelected = action.payload
         }
     }

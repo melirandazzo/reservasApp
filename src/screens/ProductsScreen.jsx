@@ -7,6 +7,7 @@ import FlatCard from '../components/FlatCard'
 import { getImage } from '../global/images'
 import { useSelector,useDispatch } from 'react-redux'
 import { setProductSelected } from '../store/slices/shopSlice'
+import { useGetProductsByCategoryQuery } from '../services/shopApi'
 
 const generateStockItems = (product) => {
     const items = [];
@@ -24,7 +25,8 @@ const ProductsScreen = ({ navigation, route }) => {
     const [productsFiltered, setProductsFiltered] = useState([])
     const [keyword, setKeyword] = useState("")
 
-        const category = useSelector(state=>state.shopReducer.categorySelected)
+    const category = useSelector(state=>state.shopReducer.categorySelected)
+    const {data:productsFilteredByCategory, isLoading, error} = useGetProductsByCategoryQuery(category.toLowerCase())
 
     const dispatch = useDispatch()
 
@@ -34,7 +36,7 @@ const ProductsScreen = ({ navigation, route }) => {
     }
 
     useEffect(() => {
-        let productsFilteredByCategory = products.filter(product => product.category.toLowerCase() === category.title.toLowerCase())
+        //let productsFilteredByCategory = products.filter(product => product.category.toLowerCase() === category.title.toLowerCase())
         if (!category.fixed && productsFilteredByCategory.length > 0) {
             productsFilteredByCategory = generateStockItems(productsFilteredByCategory[0]);
         }
@@ -44,7 +46,7 @@ const ProductsScreen = ({ navigation, route }) => {
         }
 
         setProductsFiltered(productsFilteredByCategory)
-    }, [category, keyword])
+    }, [category, keyword, productsFilteredByCategory])
 
     const renderProductItem = ({ item }) => {
         return (

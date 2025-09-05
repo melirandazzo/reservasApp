@@ -3,7 +3,7 @@ import { colors } from '../../global/colors';
 import { useEffect, useState } from 'react';
 import { useLoginMutation } from '../../services/authApi';
 import { useDispatch } from 'react-redux';
-import { setUserEmail } from '../../store/slices/userSlice';
+import { setUserEmail, setLocalId } from '../../store/slices/userSlice';
 
 const textInputWidth = Dimensions.get('window').width * 0.7
 
@@ -23,6 +23,7 @@ const LoginScreen = ({ navigation, route }) => {
         console.log("Resultado del login", result)
         if(result.status==="fulfilled"){
             dispatch(setUserEmail(result.data.email))
+            dispatch(setLocalId(result.data.localId))
         }
     },[result])
 

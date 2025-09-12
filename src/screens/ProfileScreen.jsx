@@ -3,11 +3,15 @@ import { colors } from '../global/colors'
 import CameraIcon from '../components/CameraIcon'
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { useNavigation } from '@react-navigation/native'
 import * as ImagePicker from 'expo-image-picker';
 import { usePutProfilePictureMutation } from '../services/profileApi'
 import { setImage } from '../store/slices/userSlice'
+import { IconComponent } from '../components/AssetsWrapper'
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
+import { clearSession } from '../db'
+import { clearUser } from '../store/slices/userSlice'
 
 const ProfileScreen = () => {
     const [location, setLocation] = useState("")
@@ -23,9 +27,15 @@ const ProfileScreen = () => {
 
     const dispatch = useDispatch()
 
-    //console.log("Location:", location)
-    //console.log("localId desde profileScreen:", localId)
-    console.log("Address", address)
+    const handleClearSession = async () => {
+        try {
+            await clearSession()
+            dispatch(clearUser())
+        } catch {
+            console.log("Hubo un error al limpiar la sesión")
+        }
+
+    }
 
     const pickImage = async () => {
         let result = await ImagePicker.launchCameraAsync({
@@ -126,6 +136,9 @@ const ProfileScreen = () => {
                     <Text style={styles.address}>{address || ""}</Text>
                 </View>
             </View>
+            <Pressable onPress={handleClearSession} style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }, { marginTop: 16 }]}>
+                <IconComponent iconName="log-out" size={32} style={{ color: colors.purple }} />
+            </Pressable>
         </View>
     )
 }

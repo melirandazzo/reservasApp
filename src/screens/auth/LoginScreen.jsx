@@ -1,31 +1,46 @@
-import { StyleSheet, Text, View, TextInput, Pressable, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, TextInput, Pressable, Dimensions, Switch } from 'react-native'
 import { colors } from '../../global/colors';
 import { useEffect, useState } from 'react';
 import { useLoginMutation } from '../../services/authApi';
 import { useDispatch } from 'react-redux';
 import { setUserEmail, setLocalId } from '../../store/slices/userSlice';
+import { saveSession, clearSession } from '../../db';
 
 const textInputWidth = Dimensions.get('window').width * 0.7
 
 const LoginScreen = ({ navigation, route }) => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [persistSession, setPersistSession] = useState(false)
     const [triggerLogin, result] = useLoginMutation()
 
     const dispatch = useDispatch()
 
 
-    const onsubmit = ()=>{
-        triggerLogin({email,password})
+    const onsubmit = () => {
+        triggerLogin({ email, password })
     }
 
-    useEffect(()=>{
-        console.log("Resultado del login", result)
-        if(result.status==="fulfilled"){
-            dispatch(setUserEmail(result.data.email))
-            dispatch(setLocalId(result.data.localId))
-        }
-    },[result])
+    useEffect(() => {
+        //console.log("Resultado del login", result)
+        (async () => {
+            if (result.status === "fulfilled") {
+                try {
+                    if (persistSession) {
+                        await saveSession(result.data.localId, result.data.email);
+                        dispatch(setUserEmail(result.data.email))
+                        dispatch(setLocalId(result.data.localId))
+                    } else {
+                        await clearSession();
+                    }
+
+                } catch (error) {
+                    console.log("Error al guardar sesión:", error);
+                }
+            }
+        })()
+    }, [result])
+
 
 
     return (
@@ -62,6 +77,14 @@ const LoginScreen = ({ navigation, route }) => {
             </View>
 
             <Pressable style={styles.btn} onPress={onsubmit}><Text style={styles.btnText}>Iniciar sesión</Text></Pressable>
+            <View style={styles.rememberMe}>
+                <Text style={{ color: colors.white }}>¿Mantener sesión iniciada?</Text>
+                <Switch
+                    onValueChange={() => setPersistSession(!persistSession)}
+                    value={persistSession}
+                    trackColor={{ false: '#767577', true: '#81b0ff' }}
+                />
+            </View>
         </View>
     )
 }
@@ -133,5 +156,11 @@ const styles = StyleSheet.create({
         backgroundColor: colors.red,
         borderRadius: 8,
         color: colors.white
+    },
+    rememberMe: {
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 8
     }
 })

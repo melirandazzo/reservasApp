@@ -22,18 +22,17 @@ export const initSessionTable = async () => {
 
 export const saveSession = async (localId, email) => {
     await initDatabase();
-    await db.runAsync('DELETE FROM session;'); // OJO!!! reemplaza sesión anterior. SIEMPRE USAR WHERE. En este caso no es necesario
+    await db.runAsync('DELETE FROM session WHERE localId = ?;', [localId]);
     await db.runAsync('INSERT INTO session (localId, email) VALUES (?, ?);', [localId, email]);
 }
 
 export const getSession = async () => {
     await initDatabase();
-    const result = await db.getAllAsync('SELECT * FROM session LIMIT 1;'); //En este caso no hago validaciones
-    //console.log("Obteniendo datos de DB",result)
+    const result = await db.getAllAsync('SELECT * FROM session LIMIT 1;');
     return result.length > 0 ? result[0] : null;
 };
 
-export const clearSession = async () => {
+export const clearSession = async (localId) => {
     await initDatabase();
-    await db.runAsync('DELETE FROM session;'); //SIEMPRE USAR WHERE. En este caso no es necesario
-};
+    await db.runAsync('DELETE FROM session WHERE localId = ?;', [localId]);
+}

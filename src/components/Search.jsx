@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native'
-import Icon from 'react-native-vector-icons/Feather'
 import { colors } from '../global/colors'
+import { fonts } from '../global/fonts'
+import { IconComponent } from '../components/AssetsWrapper'
 
 const Search = ({setKeyword}) => {
     return (
@@ -10,7 +11,7 @@ const Search = ({setKeyword}) => {
                 placeholder='Buscar producto' 
                 onChangeText={(text)=>{setKeyword(text)}}
             />
-            <Icon style={styles.searchIcon} name="search" size={24} color={colors.mediumGray} />
+            <IconComponent iconName="search" size={24} style={{ color: colors.mediumGray,  position:"absolute", left: 8 }} />
     </View>
     )
 }
@@ -28,13 +29,11 @@ const styles = StyleSheet.create({
     searchInput:{
         borderWidth:1,
         borderColor:colors.darkGray,
-        borderRadius:16,
+        borderRadius:5,
         minWidth: "90%",
-        paddingLeft:32
-    },
-    searchIcon:{
-        position:"absolute",
-        left: 8
-    }
+        paddingLeft:32,
+        fontFamily: fonts.text,
+        fontSize: 14
+        }
 
 })

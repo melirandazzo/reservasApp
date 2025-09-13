@@ -2,9 +2,7 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
-import { useState, useEffect } from 'react';
-// import { NavigationContainer } from "@react-navigation/native";
-// import TabsNavigator from './src/navigation/tabs/TabsNavigator';
+import { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { store } from './src/store';
 import MainNavigator from './src/navigation/MainNavigator';
@@ -12,7 +10,6 @@ import MainNavigator from './src/navigation/MainNavigator';
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-  //const [categorySelected, setCategorySelected] = useState(null)
   const [loaded, error] = useFonts({
     'LibertinusSans-Bold': require('./assets/fonts/LibertinusSans-Bold.ttf'),
     'LibertinusSans-Italic': require('./assets/fonts/LibertinusSans-Italic.ttf'),
@@ -32,27 +29,7 @@ export default function App() {
     return null;
   }
 
-  // return (
-  //   <>
-  //     <StatusBar style="light" />
-  //     {
-  //       categorySelected
-  //         ?
-  //         <>
-  //           <Header subtitle="Productos" />
-  //           <ProductsScreen category={categorySelected} />
-  //         </>
-  //         :
-  //         <>
-  //           <Header subtitle="Categorías" />
-  //           <CategoriesScreen setCategorySelected={setCategorySelected} />
-  //         </>
-  //     }
-
-  //   </>
-  // );
-
-    return (
+  return (
     <Provider store={store}>
         <StatusBar style="light" />
         <MainNavigator />

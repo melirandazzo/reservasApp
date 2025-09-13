@@ -3,7 +3,6 @@ import { colors } from '../global/colors'
 import CameraIcon from '../components/CameraIcon'
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigation } from '@react-navigation/native'
 import * as ImagePicker from 'expo-image-picker';
 import { usePutProfilePictureMutation } from '../services/profileApi'
 import { setImage } from '../store/slices/userSlice'
@@ -12,6 +11,7 @@ import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { clearSession } from '../db'
 import { clearUser } from '../store/slices/userSlice'
+import { fonts } from '../global/fonts'
 
 const ProfileScreen = () => {
     const [location, setLocation] = useState("")
@@ -29,8 +29,8 @@ const ProfileScreen = () => {
 
     const handleClearSession = async () => {
         try {
-            await clearSession()
-            dispatch(clearUser())
+            await clearSession(localId)
+            dispatch(clearUser(localId))
         } catch {
             console.log("Hubo un error al limpiar la sesión")
         }
@@ -46,7 +46,6 @@ const ProfileScreen = () => {
             base64: true
         })
 
-        //console.log(result)
         if (!result.canceled) {
             const imgBase64 = `data:image/jpeg;base64,${result.assets[0].base64}`
             dispatch(setImage(imgBase64))
@@ -69,7 +68,6 @@ const ProfileScreen = () => {
                         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.coords.latitude},${location.coords.longitude}&key=${process.env.EXPO_PUBLIC_MAPS_KEY}`
                     );
                     const data = await response.json()
-                    //console.log("Data desde geocoding", data)
                     setLocation(location)
                     setAddress(data.results[0].formatted_address)
                 }
@@ -137,8 +135,9 @@ const ProfileScreen = () => {
                 </View>
             </View>
             <Pressable onPress={handleClearSession} style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }, { marginTop: 16 }]}>
-                <IconComponent iconName="log-out" size={32} style={{ color: colors.purple }} />
+                <IconComponent iconName="log-out" size={32} style={{ color: colors.pink }} />
             </Pressable>
+             <Text style={styles.awareness}>*Aplicación en modo de prueba algunas funcionalidades no estan disponibles y puede presentar errores.</Text>
         </View>
     )
 }
@@ -162,10 +161,17 @@ const styles = StyleSheet.create({
     textProfilePlaceHolder: {
         color: colors.white,
         fontSize: 48,
+        fontFamily: fonts.text
     },
     profileData: {
         paddingVertical: 16,
-        fontSize: 16
+        fontSize: 16,
+        fontFamily: fonts.item
+    },
+    awareness: {
+        paddingVertical: 16,
+        fontSize: 10,
+        fontFamily: fonts.item
     },
     cameraIcon: {
         position: 'absolute',
@@ -188,7 +194,8 @@ const styles = StyleSheet.create({
         height: 240,
     },
     mapTitle: {
-        fontWeight: '700'
+        fontWeight: '700',
+        fontFamily: fonts.itembold
     },
     placeDescriptionContainer: {
         flexDirection: 'row',

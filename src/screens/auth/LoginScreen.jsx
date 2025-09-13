@@ -22,7 +22,6 @@ const LoginScreen = ({ navigation, route }) => {
     }
 
     useEffect(() => {
-        //console.log("Resultado del login", result)
         (async () => {
             if (result.status === "fulfilled") {
                 try {
@@ -50,20 +49,19 @@ const LoginScreen = ({ navigation, route }) => {
             <View style={styles.inputContainer}>
                 <TextInput
                     onChangeText={(text) => setEmail(text)}
-                    placeholderTextColor={colors.lightGray}
+                    placeholderTextColor={colors.mediumGray}
                     placeholder="Email"
                     style={styles.textInput}
                 />
                 <TextInput
                     onChangeText={(text) => setPassword(text)}
-                    placeholderTextColor={colors.lightGray}
+                    placeholderTextColor={colors.mediumGray}
                     placeholder='Password'
                     style={styles.textInput}
                     secureTextEntry
                 />
             </View>
             <View style={styles.footTextContainer}>
-                <Text style={styles.whiteText}>¿No tienes una cuenta?</Text>
                 <Pressable onPress={() => navigation.navigate('Signup')}>
                     <Text style={
                         {
@@ -71,18 +69,18 @@ const LoginScreen = ({ navigation, route }) => {
                             ...styles.underLineText
                         }
                     }>
-                        Crea una
+                        Crear nueva cuenta
                     </Text>
                 </Pressable>
             </View>
 
             <Pressable style={styles.btn} onPress={onsubmit}><Text style={styles.btnText}>Iniciar sesión</Text></Pressable>
             <View style={styles.rememberMe}>
-                <Text style={{ color: colors.white }}>¿Mantener sesión iniciada?</Text>
+                <Text style={{ color: colors.white }}>Recordar datos</Text>
                 <Switch
                     onValueChange={() => setPersistSession(!persistSession)}
                     value={persistSession}
-                    trackColor={{ false: '#767577', true: '#81b0ff' }}
+                    trackColor={{ false: '#767577', true: '#f0b6f1ff' }}
                 />
             </View>
         </View>

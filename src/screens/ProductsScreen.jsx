@@ -1,5 +1,4 @@
 import { StyleSheet, Text, View, FlatList, Pressable, Image } from 'react-native'
-import products from '../data/products.json'
 import { useEffect, useState } from 'react'
 import { fonts } from '../global/fonts'
 import Search from '../components/Search'
@@ -15,7 +14,10 @@ const generateStockItems = (product) => {
         items.push({
             id: `${product.id}${i}`,
             title: `${product.title} ${i}`,
-            image: product.image
+            image: product.image,
+            price: product.price,
+            shortDescription: product.shortDescription,
+            longDescription: product.longDescription,
         });
     }
     return items;
@@ -26,7 +28,8 @@ const ProductsScreen = ({ navigation, route }) => {
     const [keyword, setKeyword] = useState("")
 
     const category = useSelector(state=>state.shopReducer.categorySelected)
-    const {data:productsFilteredByCategory, isLoading, error} = useGetProductsByCategoryQuery(category.toLowerCase())
+
+    const {data:productsFilteredByCategory, isLoading, error} = useGetProductsByCategoryQuery(category.id)
 
     const dispatch = useDispatch()
 
@@ -36,16 +39,16 @@ const ProductsScreen = ({ navigation, route }) => {
     }
 
     useEffect(() => {
-        //let productsFilteredByCategory = products.filter(product => product.category.toLowerCase() === category.title.toLowerCase())
-        if (!category.fixed && productsFilteredByCategory.length > 0) {
-            productsFilteredByCategory = generateStockItems(productsFilteredByCategory[0]);
+        let filtered = productsFilteredByCategory || [];
+        if (!category.fixed && filtered.length > 0) {
+            filtered = generateStockItems(productsFilteredByCategory[0]);
         }
 
         if (keyword) {
-            productsFilteredByCategory = productsFilteredByCategory.filter(product => product.title.toLowerCase().includes(keyword.toLocaleLowerCase()))
+            filtered = productsFilteredByCategory.filter(product => product.title.toLowerCase().includes(keyword.toLocaleLowerCase()))
         }
 
-        setProductsFiltered(productsFilteredByCategory)
+        setProductsFiltered(filtered)
     }, [category, keyword, productsFilteredByCategory])
 
     const renderProductItem = ({ item }) => {
@@ -65,7 +68,7 @@ const ProductsScreen = ({ navigation, route }) => {
             <FlatList
                 data={productsFiltered}
                 keyExtractor={item => item.id}
-                renderItem={renderProductItem} //{({ item }) => <RegularText style={{ fontSize: 16 }}>{item.title}</RegularText>}
+                renderItem={renderProductItem} 
             />
         </View>
     )

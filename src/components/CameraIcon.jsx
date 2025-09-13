@@ -1,11 +1,11 @@
 import { StyleSheet, View } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '../global/colors';
+import { IconComponent } from '../components/AssetsWrapper'
 
 const CameraIcon = () => {
   return (
     <View style={styles.iconContainer}>
-      <Icon name="photo-camera" size={24} color={colors.white} />
+      <IconComponent iconName="camera" size={24} style={{ color: colors.white }} />
     </View>
   )
 }

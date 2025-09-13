@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View, Pressable } from 'react-native'
 import { colors } from '../global/colors'
 import { fonts } from '../global/fonts'
-import Icon from 'react-native-vector-icons/Feather'
 import { useNavigation } from '@react-navigation/native'
+import { IconComponent } from '../components/AssetsWrapper'
 
 const Header = ({ subtitle }) => {
   const navigation = useNavigation()
@@ -12,7 +12,9 @@ const Header = ({ subtitle }) => {
       <Text style={styles.title}>Reserva tu espacio</Text>
       <Text style={styles.subtitle}>{subtitle}</Text>
       {
-        canGoBack && <Pressable onPress={() => navigation.goBack()}><Icon name="arrow-left-circle" size={32} color={colors.white} style={styles.goBackIcon} /></Pressable>
+        canGoBack && <Pressable onPress={() => navigation.goBack()}>
+          <IconComponent iconName="arrow-left-circle" size={32} style={{ color: colors.white }} />
+          </Pressable>
       }
     </View>
   )

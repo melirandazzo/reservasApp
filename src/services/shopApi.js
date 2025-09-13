@@ -8,13 +8,12 @@ export const shopApi = createApi({
     endpoints:(builder)=>({
         getCategories: builder.query({query:()=>'categories.json'}),
         getProductsByCategory: builder.query({
-            query:(category)=>`products.json?orderBy="category"&equalTo="${category}"`,
+            query:(category)=>`products.json?orderBy="category_id"&equalTo=${category}`,
             transformResponse: (response) => {
-            // Convertir objeto en array
             return Object.values(response)
             }
         })
     })
 })
 
-export const {useGetCategoriesQuery,useGetProductsByCategoryQuery } = shopApi
+export const {useGetCategoriesQuery, useGetProductsByCategoryQuery } = shopApi

@@ -1,32 +1,29 @@
-import { StyleSheet, Text, View, Pressable, Image, ScrollView, useWindowDimensions } from 'react-native'
+import { StyleSheet, Text, View, Pressable, ScrollView, useWindowDimensions } from 'react-native'
+import { useState } from 'react'
 import { colors } from '../global/colors'
-import { useSelector,useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { addItemTocart } from '../store/slices/cartSlice'
+import { ImageComponent } from '../components/AssetsWrapper'
+import { fonts } from '../global/fonts'
 
 const ProductScreen = () => {
-    const product = useSelector(state=>state.shopReducer.productSelected)
+    const product = useSelector(state => state.shopReducer.productSelected)
     const { width } = useWindowDimensions()
     const dispatch = useDispatch()
+    const [reserved, setReserved] = useState(false)
+
+    const handleReserve = () => {
+        dispatch(addItemTocart({ product: product, quantity: 1 }))
+        setReserved(true)
+    }
+
     return (
         <ScrollView style={styles.productContainer}>
-            <Text style={styles.textBrand}>marca tbd</Text>
             <Text style={styles.textTitle}>{product.title}</Text>
-            <Image
-                source={{ uri: product.image }}
-                alt={product.title}
-                width='100%'
-                height={width * .7}
-                resizeMode='contain'
-            />
             <Text style={styles.longDescription}>{product.longDescription}</Text>
-            <View style={styles.tagsContainer}>
-                <View style={styles.tags}>
-                    <Text style={styles.tagText}>Tags : </Text>
-                    {
-                        product.tags?.map(tag => <Text key={Math.random()} style={styles.tagText}>{tag}</Text>)
-                    }
-                </View>
+            <ImageComponent imageName={product.image} style={{ width: '100%', height: 150, resizeMode: 'contain' }} />
 
+            <View style={styles.tagsContainer}>
                 {
                     product.discount > 0 && <View style={styles.discount}><Text style={styles.discountText}>-{product.discount}%</Text></View>
                 }
@@ -36,9 +33,17 @@ const ProductScreen = () => {
             }
             <Text style={styles.price}>Precio: ${product.price}</Text>
             <Pressable
-                style={({ pressed }) => [{ opacity: pressed ? 0.95 : 1 }, styles.addToCartButton]}
-                onPress={()=>dispatch(addItemTocart({product:product,quantity:1}))}>
-                <Text style={styles.textAddToCart}>Agregar al carrito</Text>
+                style={({ pressed }) => [
+                    { opacity: pressed ? 0.95 : 1 },
+                    styles.addToCartButton,
+                    reserved && styles.addToCartButtonDisabled
+                ]}
+                onPress={handleReserve}
+                disabled={reserved}
+            >
+                <Text style={[styles.textAddToCart, reserved && styles.textAddToCartDisabled]}>
+                    {reserved ? 'Reservado' : 'Reservar'}
+                </Text>
             </Pressable>
         </ScrollView>
     )
@@ -51,17 +56,16 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         marginVertical: 16
     },
-    textBrand: {
-        color: colors.grisOscuro,
-    },
     textTitle: {
         fontSize: 24,
-        fontWeight: '700'
+        fontWeight: '700',
+        fontFamily: fonts.title
     },
     longDescription: {
         fontSize: 16,
         textAlign: 'justify',
         paddingVertical: 8,
+        fontFamily: fonts.text
     },
     tagsContainer: {
         flexDirection: 'row',
@@ -70,18 +74,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginVertical: 8
     },
-    tags: {
-        flexDirection: 'row',
-        gap: 5,
-    },
-    tagText: {
-        fontWeight: '600',
-        fontSize: 14,
-        color: colors.purple
-    },
     price: {
         fontWeight: '800',
-        fontSize: 18
+        fontSize: 18,
+        fontFamily: fonts.text
     },
     discount: {
         backgroundColor: colors.brightOrange,
@@ -89,32 +85,43 @@ const styles = StyleSheet.create({
         height: 52,
         borderRadius: 52,
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        fontFamily: fonts.text
     },
     discountText: {
         color: colors.white,
         textAlign: 'center',
-        verticalAlign: 'center'
+        verticalAlign: 'center',
+        fontFamily: fonts.text
     },
     noStockText: {
-        color: colors.red
+        color: colors.red,
+        fontFamily: fonts.text,
     },
     price: {
         fontSize: 24,
         fontWeight: '700',
         alignSelf: 'center',
-        paddingVertical: 16
+        paddingVertical: 16,
+        fontFamily: fonts.text,
     },
     addToCartButton: {
         padding: 8,
         paddingHorizontal: 16,
-        backgroundColor: colors.purple,
-        borderRadius: 16,
+        backgroundColor: colors.pink,
+        borderRadius: 5,
         marginVertical: 16
+    },
+    addToCartButtonDisabled: {
+        backgroundColor: '#cccccc',
     },
     textAddToCart: {
         color: colors.white,
         fontSize: 24,
         textAlign: 'center',
+        fontFamily: fonts.itembold,
+    },
+    textAddToCartDisabled: {
+        color: colors.gray,
     }
 })

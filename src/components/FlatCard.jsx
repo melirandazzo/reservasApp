@@ -1,7 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { colors } from '../global/colors'
 
-//Componente Wrapper
 const FlatCard = ({ children,style }) => {
     return (
         <View style={{...styles.container,...style}}>
@@ -21,8 +20,8 @@ const styles = StyleSheet.create({
         padding:32,
         margin:8,
         elevation: 10,
-        shadowColor: colors.darkGray,//ios
-        shadowOffset: { x: 10, y: 10 },//ios
-        shadowOpacity: 0.7//ios
+        shadowColor: colors.darkGray,
+        shadowOffset: { x: 10, y: 10 },
+        shadowOpacity: 0.7
     }
 })

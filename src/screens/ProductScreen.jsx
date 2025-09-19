@@ -10,11 +10,12 @@ const ProductScreen = () => {
     const product = useSelector(state => state.shopReducer.productSelected)
     const { width } = useWindowDimensions()
     const dispatch = useDispatch()
-    const [reserved, setReserved] = useState(false)
+    const cartItems = useSelector(state => state.cartReducer.cartItems)
+    const isReserved = product ? cartItems.some(ci => ci.id === product.id) : false
 
     const handleReserve = () => {
+        if (!product || isReserved) return
         dispatch(addItemTocart({ product: product, quantity: 1 }))
-        setReserved(true)
     }
 
     return (
@@ -36,13 +37,13 @@ const ProductScreen = () => {
                 style={({ pressed }) => [
                     { opacity: pressed ? 0.95 : 1 },
                     styles.addToCartButton,
-                    reserved && styles.addToCartButtonDisabled
+                    isReserved && styles.addToCartButtonDisabled
                 ]}
                 onPress={handleReserve}
-                disabled={reserved}
+                disabled={isReserved}
             >
-                <Text style={[styles.textAddToCart, reserved && styles.textAddToCartDisabled]}>
-                    {reserved ? 'Reservado' : 'Reservar'}
+                <Text style={[styles.textAddToCart, isReserved && styles.textAddToCartDisabled]}>
+                    {isReserved ? 'Reservado' : 'Reservar'}
                 </Text>
             </Pressable>
         </ScrollView>
@@ -122,6 +123,6 @@ const styles = StyleSheet.create({
         fontFamily: fonts.itembold,
     },
     textAddToCartDisabled: {
-        color: colors.gray,
+        color: colors.white,
     }
 })

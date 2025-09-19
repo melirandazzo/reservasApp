@@ -13,7 +13,15 @@ export const shopApi = createApi({
             return Object.values(response)
             }
         })
+        ,
+        getReservationsByProduct: builder.query({
+            query: (productId) => `reservations.json?orderBy="productId"&equalTo="${productId}"`,
+            transformResponse: (response) => {
+                if (!response) return []
+                return Object.values(response)
+            }
+        })
     })
 })
 
-export const {useGetCategoriesQuery, useGetProductsByCategoryQuery } = shopApi
+export const {useGetCategoriesQuery, useGetProductsByCategoryQuery, useGetReservationsByProductQuery } = shopApi

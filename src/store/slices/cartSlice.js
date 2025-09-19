@@ -11,15 +11,24 @@ const cartSlice = createSlice({
     },
     reducers: {
         addItemTocart: (state, action) => {
-            const {product, quantity} = action.payload
+            const {product, quantity, selectedDate} = action.payload
             const productInCart = state.cartItems.find(item=>item.id===product.id)
             if(!productInCart){
-                state.cartItems.push({...product,quantity})
+                state.cartItems.push({...product,quantity, selectedDate: selectedDate || null})
             }else{
                 productInCart.quantity+=1
+                if(selectedDate) productInCart.selectedDate = selectedDate
             }
             state.updatedAt = new Date().toLocaleString();
             state.total = state.cartItems.reduce((acc,item)=> acc + item.price*item.quantity, 0)
+        },
+        updateItemDate: (state, action) => {
+            const { id, selectedDate } = action.payload
+            const productInCart = state.cartItems.find(item => item.id === id)
+            if (productInCart) {
+                productInCart.selectedDate = selectedDate
+                state.updatedAt = new Date().toLocaleString();
+            }
         },
         removeItemFromCart: (state, action) => {
             const id = action.payload
@@ -30,6 +39,6 @@ const cartSlice = createSlice({
     }
 })
 
-export const { addItemTocart, removeItemFromCart } = cartSlice.actions
+export const { addItemTocart, updateItemDate, removeItemFromCart } = cartSlice.actions
 
 export default cartSlice.reducer

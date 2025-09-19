@@ -9,7 +9,6 @@ export const initDatabase = async () => {
 }
 
 export const initSessionTable = async () => {
-    //console.log("Iniciando tabla de sesiones")
     await initDatabase();
     await db.execAsync(`
     CREATE TABLE IF NOT EXISTS session (

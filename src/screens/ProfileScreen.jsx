@@ -11,6 +11,8 @@ import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { clearSession } from '../db'
 import { clearUser } from '../store/slices/userSlice'
+import { clearPersistedState } from '../store'
+import { removeItemFromCart } from '../store/slices/cartSlice'
 import { fonts } from '../global/fonts'
 
 const ProfileScreen = () => {
@@ -30,7 +32,8 @@ const ProfileScreen = () => {
     const handleClearSession = async () => {
         try {
             await clearSession(localId)
-            dispatch(clearUser(localId))
+            dispatch(clearUser())
+            await clearPersistedState(dispatch)
         } catch {
             console.log("Hubo un error al limpiar la sesión")
         }

@@ -9,8 +9,8 @@ const ProfileStackNavigator = () => {
         <Stack.Navigator
             initialRouteName="Perfil"
             screenOptions={{
-                header: ({route})=>(<Header title="Mundo Geek" subtitle="Perfil"/>)
-            }}
+                    header: ({route, navigation})=>(<Header navigation={navigation} title="Mundo Geek" subtitle="Perfil"/>)
+                }}
         >
             <Stack.Screen name="Perfil" component={ProfileScreen} />
         </Stack.Navigator>

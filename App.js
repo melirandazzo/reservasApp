@@ -4,7 +4,8 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
 import { useEffect } from 'react';
 import { Provider } from 'react-redux';
-import { store } from './src/store';
+import { store, persistor } from './src/store';
+import { PersistGate } from 'redux-persist/integration/react'
 import MainNavigator from './src/navigation/MainNavigator';
 
 SplashScreen.preventAutoHideAsync();
@@ -31,8 +32,10 @@ export default function App() {
 
   return (
     <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
         <StatusBar style="light" />
         <MainNavigator />
+      </PersistGate>
     </Provider>
   );
 }

@@ -4,9 +4,9 @@ import { fonts } from '../global/fonts'
 import { useNavigation } from '@react-navigation/native'
 import { IconComponent } from '../components/AssetsWrapper'
 
-const Header = ({ subtitle }) => {
-  const navigation = useNavigation()
-  const canGoBack = navigation.canGoBack()
+const Header = ({ subtitle, navigation: navProp }) => {
+  const navigation = navProp || useNavigation()
+  const canGoBack = navigation && typeof navigation.canGoBack === 'function' ? navigation.canGoBack() : false
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Reserva tu espacio</Text>

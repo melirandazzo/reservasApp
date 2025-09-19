@@ -140,7 +140,6 @@ const ProfileScreen = () => {
             <Pressable onPress={handleClearSession} style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }, { marginTop: 16 }]}>
                 <IconComponent iconName="log-out" size={32} style={{ color: colors.pink }} />
             </Pressable>
-             <Text style={styles.awareness}>*Aplicación en modo de prueba algunas funcionalidades no estan disponibles y puede presentar errores.</Text>
         </View>
     )
 }
